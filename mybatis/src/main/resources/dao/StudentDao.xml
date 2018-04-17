@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.java namespace -->
+<mapper namespace="ru.liga.mybatis.dao.StudentDao">
+
+    <resultMap type="ru.liga.mybatis.entity.StudentEntity" id="StudentMap">
+        <id property="id" column="id"/>
+        <result property="fio" column="fio"/>
+        <result property="gender" column="gender"/>
+        <result property="course" column="course"/>
+        <result property="birthday" column="birthday"/>
+        <result property="departmentId" column="department_id"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="StudentMap">
+        SELECT * FROM liga.student
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByDepartmentId" resultMap="StudentMap">
+        SELECT * FROM liga.student WHERE department_id = #{departmentId}
+    </select>
+
+    <select id="deleteById" resultMap="StudentMap">
+        delete from liga.student where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="StudentEntity">
+        INSERT INTO liga.student (id,fio,gender,course,birthday,department_id )
+                    VALUES (
+                          #{id,jdbcType=VARCHAR},
+                          #{fio, jdbcType=VARCHAR},
+                          #{gender, jdbcType=VARCHAR},
+                          #{course, jdbcType=SMALLINT},
+                          #{birthday, jdbcType=TIMESTAMP},
+                          #{departmentId, jdbcType=INTEGER}
+                  )
+    </insert>
+
+    <update id="update" parameterType="StudentEntity">
+        UPDATE liga.student
+        SET
+        fio = #{fio, jdbcType=VARCHAR},
+        gender = #{gender, jdbcType=VARCHAR},
+        course = #{course, jdbcType=SMALLINT},
+        birthday = #{birthday, jdbcType=TIMESTAMP},
+        department_id = #{departmentId, jdbcType=INTEGER}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

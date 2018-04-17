@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.java namespace -->
+<mapper namespace="ru.liga.mybatis.dao.DepartmentDao">
+
+    <resultMap type="DepartmentEntity" id="DepartmentMap">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="address" column="address"/>
+        <result property="foundationYear" column="foundation_year"/>
+        <collection
+                property="students"
+                javaType="List"
+                column="id"
+                ofType="StudentEntity"
+                select="ru.liga.mybatis.dao.StudentDao.selectByDepartmentId"
+        />
+        <collection
+                property="employees"
+                javaType="List"
+                column="id"
+                ofType="EmployeeEntity"
+                select="ru.liga.mybatis.dao.EmployeeDao.selectByDepartmentId"
+        />
+    </resultMap>
+
+    <delete id="delete" parameterType="long">
+        delete from department where id = #{id}
+    </delete>
+
+    <select id="select" resultMap="DepartmentMap">
+        SELECT * FROM department
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByFoundationYear" resultMap="DepartmentMap">
+        SELECT * FROM department WHERE foundation_year = #{foundationYear}
+    </select>
+    <select id="selectByTitle" resultMap="DepartmentMap">
+   SELECT * FROM department WHERE title = #{title}
+    </select>
+
+    <insert id="insert"
+            parameterType="DepartmentEntity">
+        insert into department (id,title, address, foundation_year)
+        values (
+        #{id,jdbcType=BIGINT},
+        #{title, jdbcType=VARCHAR},
+        #{address, jdbcType=VARCHAR},
+        #{foundationYear, jdbcType=SMALLINT}
+        )
+    </insert>
+
+    <update id="update" parameterType="DepartmentEntity">
+        update department
+        SET
+           title = #{title, jdbcType=VARCHAR},
+           address = #{address, jdbcType=VARCHAR},
+           foundation_year = #{foundationYear, jdbcType=SMALLINT}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

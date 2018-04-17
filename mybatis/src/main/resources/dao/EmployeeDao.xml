@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Mapper.java namespace -->
+<mapper namespace="ru.liga.mybatis.dao.EmployeeDao">
+
+    <resultMap type="ru.liga.mybatis.entity.EmployeeEntity" id="EmployeeMap">
+        <id property="id" column="id"/>
+        <result property="fio" column="fio"/>
+        <result property="gender" column="gender"/>
+        <result property="departmentId" column="department_id"/>
+        <result property="degree" column="degree"/>
+        <result property="position" column="position"/>
+        <result property="birthday" column="birthday"/>
+    </resultMap>
+
+    <select id="select" resultMap="EmployeeMap">
+        SELECT * FROM employee
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByDepartmentId" resultMap="EmployeeMap">
+        SELECT * FROM employee WHERE department_id = #{departmentId}
+    </select>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM employee WHERE id = #{id}
+    </delete>
+
+    <insert id="insert"
+            parameterType="EmployeeEntity">
+        INSERT INTO employee (id, fio, gender, department_id, degree, position, birthday)
+        VALUES (
+        #{id, jdbcType=BIGINT},
+        #{fio, jdbcType=VARCHAR},
+        #{gender, jdbcType=VARCHAR},
+        #{departmentId, jdbcType=BIGINT},
+        #{degree, jdbcType=VARCHAR},
+        #{position, jdbcType=VARCHAR},
+        #{birthday, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="EmployeeEntity">
+        UPDATE employee
+        SET
+          fio = #{fio, jdbcType=VARCHAR},
+          gender = #{gender, jdbcType=VARCHAR},
+          department_id = #{departmentId, jdbcType=BIGINT},
+          degree = #{degree, jdbcType=VARCHAR},
+          position = #{position, jdbcType=VARCHAR},
+          birthday = #{birthday, jdbcType=TIMESTAMP}
+        WHERE id = #{id}
+    </update>
+
+
+
+
+
+</mapper>
